@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../config/sequelizer.js";
+import sequelize from "../../config/sequelizer.js";
 
-const ReportModel = sequelize.define(
+const ReportDTO = sequelize.define(
     "report",
     {
         id: {
@@ -17,6 +17,7 @@ const ReportModel = sequelize.define(
         uploaded_at: {
             type: DataTypes.DATE,
             allowNull: false,
+            defaultValue: DataTypes.NOW,
         },
     },
     {
@@ -34,4 +35,4 @@ sequelize
         console.error("Error synchronizing tables:", err);
     });
 
-export default ReportModel;
+export default ReportDTO;

@@ -1,6 +1,5 @@
 /node_modules
+/temp
+/uploads
 
 .env
-
-/temp
-

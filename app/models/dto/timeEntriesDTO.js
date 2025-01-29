@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../config/sequelizer.js";
+import sequelize from "../../config/sequelizer.js";
 
-const TimeEntriesModel = sequelize.define(
+const TimeEntriesDTO = sequelize.define(
     "time_entries",
     {
         id: {
@@ -35,15 +35,15 @@ const TimeEntriesModel = sequelize.define(
     }
 );
 
-TimeEntriesModel.associate = function (models) {
+TimeEntriesDTO.associate = function (models) {
     if (models) {
-        TimeEntriesModel.belongsTo(models.JobGroupModel, {
+        TimeEntriesDTO.belongsTo(models.JobGroupDTO, {
             foreignKey: "job_group",
         });
-        TimeEntriesModel.belongsTo(models.ReportModel, {
+        TimeEntriesDTO.belongsTo(models.ReportDTO, {
             foreignKey: "report_id",
         });
     }
 };
 
-export default TimeEntriesModel;
+export default TimeEntriesDTO;

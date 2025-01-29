@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../config/sequelizer.js";
+import sequelize from "../../config/sequelizer.js";
 
-const JobGroupModel = sequelize.define(
+const JobGroupDTO = sequelize.define(
     "job_groups",
     {
         id: {
@@ -22,6 +22,6 @@ const JobGroupModel = sequelize.define(
     {
         timestamps: false,
     }
-);  
+);
 
-export default JobGroupModel;
+export default JobGroupDTO;
