@@ -1,8 +1,8 @@
-import { convertStrToDate, getPayPeriod } from "./app/utils/dateUtils.js";
-import { getReportId, processCSVFile } from "./app/utils/fileUtils.js";
-import { convertPayrollData } from "./app/utils/payrollUtils.js";
+import { convertStrToDate, getPayPeriod } from "../utils/dateUtils.js";
+import { getReportId, processCSVFile } from "../utils/fileUtils.js";
+import { convertPayrollData } from "../utils/payrollUtils.js";
 import fs from "fs";
-import { ERRORS } from "./app/resources/constants.js";
+import { ERRORS } from "../resources/constants.js";
 
 // Mock file system operations
 jest.mock("fs", () => ({
