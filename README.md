@@ -46,12 +46,33 @@ GET http://localhost:8080/api/report
 
 #### How did you test that your implementation was correct?
 
+I tested the implementation using both correct and incorrect cases to verify correctness and error handling (functional testing). Specifically:
 
+-   I used cURL and Postman to test the APIs by sending different HTTP requests and verifying responses.
+
+-   I conducted unit tests for utility functions to ensure their correctness and edge case handling.
+
+-   I checked error handling mechanisms to confirm that invalid inputs were properly caught and returned appropriate error responses.
 
 #### If this application was destined for a production environment, what would you add or change?
 
+For the production environment, I would consider the following improvements:
 
+-   `Database optimization`: Providing query optimization and security concerns such as preventing SQL injection would improve the interactions with the database.
+-   `Scalability`: I would suggest using cloud systems (including AWS, Azure, etc.) for a more scalable infrastructure. Furthermore, using a load balancer is essential. Message queues (for instance: Kafka) can also help improve the efficiency of background tasks.
+-   `Testing`: Expanding the unit tests, as well as integration testing and E2E testing (for both the Backend and Frontend sides).
+-   `CI/CD automation`: Automating CI/CD pipelines using Docker (or containerd), Jenkins, and Kubernetes.
+-   `Monitoring tools`: such as Elastic/Kibana and Grafana can help to check the performance and detect anomalies continuously.
+-   `API development and documentation`: using swagger or openAPI to document the APIs, use-cases, etc.
 
 #### What compromises did you have to make as a result of the time constraints of this challenge?
 
+Based on the limited time for this challenge, I believe `limited test scope` is one of the compromises. Although I provided a few tests to check the utils functions, I did not create comprehensive integration tests covering all edge cases.
 
+In addition, an `authentication/authorization system` is required to check users, their API access, and credentials.
+
+`file handling` can also be optimized, as we store the big chunks of data within decentralized or cloud storage for efficiency.
+
+`entities, DTOs, and database tables` can also be improved, as an example, we can add a currency field to the database to cover different types of currencies (such as USD, EURO, etc)
+
+Last but not least, according to the time constraints, I was not able to create a basic `React` app for the frontend and integrate it with the current backend system.
