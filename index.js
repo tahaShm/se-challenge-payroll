@@ -12,7 +12,6 @@ const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use("/api/upload", uploadRoutes);
 app.use("/api/report", reportRoutes);
-// app.use(errorHandler);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

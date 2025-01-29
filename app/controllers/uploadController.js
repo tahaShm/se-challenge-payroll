@@ -36,7 +36,7 @@ const uploadFile = asyncHandler(async (req, res) => {
         await createNewReport(reportId);
 
         for (const record of records) {
-            const jobGroup = await checkJobGroupValidity(record);
+            const jobGroup = await checkJobGroupValidity(record["job group"]);
             if (!jobGroup) {
                 res.status(400);
                 throw new Error(ERRORS.INVALID_JOB_GROUP + record["job group"]);
@@ -55,7 +55,10 @@ const uploadFile = asyncHandler(async (req, res) => {
     } catch (error) {
         if (!res.headersSent) {
             res.status(res.statusCode !== 200 ? res.statusCode : 500).json({
-                error: error.message,
+                error:
+                    res.statusCode !== 500
+                        ? error.message
+                        : ERRORS.INTERNAL_SERVER_ERROR,
             });
         }
     }

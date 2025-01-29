@@ -10,4 +10,8 @@ const createNewTimeEntry = async (reportId, entry_date, record) => {
     });
 };
 
-export { createNewTimeEntry };
+const fetchAllTimeEntries = async () => {
+    return await TimeEntriesDTO.findAll();
+};
+
+export { createNewTimeEntry, fetchAllTimeEntries };

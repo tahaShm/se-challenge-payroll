@@ -1,12 +1,12 @@
 import JobGroupDTO from "../models/dto/jobGroupDTO.js";
 import { ERRORS } from "../resources/constants.js";
 
-const checkJobGroupValidity = async (record) => {
-    const jobGroup = await JobGroupDTO.findOne({
-        where: { job_group: record["job group"] },
+const checkJobGroupValidity = async (jobGroupName) => {
+    const validJobGroup = await JobGroupDTO.findOne({
+        where: { job_group: jobGroupName },
     });
 
-    return jobGroup;
+    return validJobGroup;
 };
 
 export { checkJobGroupValidity };

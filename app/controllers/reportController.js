@@ -1,37 +1,19 @@
 import asyncHandler from "express-async-handler";
-import TimeEntriesDTO from "../models/dto/timeEntriesDTO.js";
-import JobGroupDTO from "../models/dto/jobGroupDTO.js";
+import { fetchAllTimeEntries } from "../models/timeEntries.js";
+import { checkJobGroupValidity } from "../models/jobGroups.js";
+import { getPayPeriod } from "../utils/dateUtils.js";
+import { convertPayrollData } from "../utils/payrollUtils.js";
+import { ERRORS } from "../resources/constants.js";
 
 const getPayrollReport = asyncHandler(async (req, res) => {
     try {
-        // Fetch all time entries
-        const timeEntries = await TimeEntriesDTO.findAll();
+        const timeEntries = await fetchAllTimeEntries();
 
         if (!timeEntries || timeEntries.length === 0) {
             return res
                 .status(200)
                 .json({ payrollReport: { employeeReports: [] } });
         }
-
-        // Define helper function to determine pay period
-        const getPayPeriod = (date) => {
-            const entryDate = new Date(date);
-            const year = entryDate.getFullYear();
-            const month = entryDate.getMonth() + 1;
-            const startDate =
-                entryDate.getDate() <= 15
-                    ? `${year}-${month.toString().padStart(2, "0")}-01`
-                    : `${year}-${month.toString().padStart(2, "0")}-16`;
-            const endDate =
-                entryDate.getDate() <= 15
-                    ? `${year}-${month.toString().padStart(2, "0")}-15`
-                    : `${year}-${month.toString().padStart(2, "0")}-${new Date(
-                          year,
-                          month,
-                          0
-                      ).getDate()}`;
-            return { startDate, endDate };
-        };
 
         // Group records by employee and pay period
         const payrollData = {};
@@ -41,11 +23,12 @@ const getPayrollReport = asyncHandler(async (req, res) => {
             const payPeriod = getPayPeriod(entry_date);
             const periodKey = `${employee_id}-${payPeriod.startDate}`;
 
-            // Fetch hourly rate for job group
-            const jobGroup = await JobGroupDTO.findOne({
-                where: { job_group },
-            });
-            if (!jobGroup) continue;
+            const jobGroup = await checkJobGroupValidity(job_group);
+            if (!jobGroup) {
+                res.status(400);
+                throw new Error(ERRORS.INVALID_JOB_GROUP + job_group);
+            }
+
             const hourlyRate = jobGroup.hourly_rate;
 
             if (!payrollData[periodKey]) {
@@ -59,11 +42,7 @@ const getPayrollReport = asyncHandler(async (req, res) => {
             payrollData[periodKey].amountPaid += hours_worked * hourlyRate;
         }
 
-        // Convert payroll data to array and format amountPaid
-        const employeeReports = Object.values(payrollData).map((report) => ({
-            ...report,
-            amountPaid: `$${report.amountPaid.toFixed(2)}`,
-        }));
+        const employeeReports = convertPayrollData(payrollData);
 
         // Sort by employee ID and pay period start date
         employeeReports.sort((a, b) => {
@@ -78,7 +57,14 @@ const getPayrollReport = asyncHandler(async (req, res) => {
 
         res.status(200).json({ payrollReport: { employeeReports } });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        if (!res.headersSent) {
+            res.status(res.statusCode !== 200 ? res.statusCode : 500).json({
+                error:
+                    res.statusCode !== 500
+                        ? error.message
+                        : ERRORS.INTERNAL_SERVER_ERROR,
+            });
+        }
     }
 });
 

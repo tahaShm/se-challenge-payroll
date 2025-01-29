@@ -10,21 +10,10 @@ const JOB_GROUPS = {
 const ERRORS = {
     INVALID_FILE: "Invalid file.",
     INVALID_CSV_FILE_NAME: "Invalid CSV file: missing ReportID",
-    INVALID_JOB_GROUP: "record with this job group does not exist: ",
+    INVALID_JOB_GROUP: "Invalid job group: ",
     DUPLICATE_REPORT_ID: "Duplicate report ID: ",
     CSV_PROCESSING_ERROR: "Error processing CSV file: ",
-
-    INVALID_JOB_GROUP: "Invalid job group",
-    INVALID_HOUR: "Invalid hour",
-    INVALID_HOURS_WORKED: "Invalid hours worked",
-    INVALID_DATE: "Invalid date",
-    INVALID_DATE_INTERVAL: "Invalid date interval",
-    INVALID_PAY_PERIOD: "Invalid pay period",
-    INVALID_PAY_PERIOD_START: "Invalid pay period start",
-    INVALID_PAY_PERIOD_END: "Invalid pay period end",
-    INVALID_PAY_PERIOD_START_END: "Invalid pay period start and end",
-    INVALID_PAY_PERIOD_START_END_INTERVAL:
-        "Invalid pay period start and end interval",
+    INTERNAL_SERVER_ERROR: "Internal server error",
 };
 
 const SUCCESSES = {
